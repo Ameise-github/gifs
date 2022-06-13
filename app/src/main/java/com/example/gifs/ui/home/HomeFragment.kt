@@ -1,32 +1,51 @@
 package com.example.gifs.ui.home
 
-import androidx.lifecycle.ViewModelProvider
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.example.gifs.R
+import com.example.gifs.data.network.ClientGiphy
+import com.example.gifs.databinding.FragmentHomeBinding
+import com.example.gifs.ui.home.items.GifItem
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     companion object {
         fun newInstance() = HomeFragment()
     }
 
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel by lazy { ViewModelProvider(this)[HomeViewModel::class.java] }
+    lateinit var bindingHome: FragmentHomeBinding
+
+    private val client = ClientGiphy()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+        bindingHome = FragmentHomeBinding.inflate(inflater, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
+        // получить gif
+        val groupAdapter = GroupAdapter<GroupieViewHolder>()
+        bindingHome.rvTrending.adapter = groupAdapter
+
+
+        /*client.api.getTrending()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                groupAdapter.add(GifItem(it))
+            }, Throwable::printStackTrace)
+*/
+        return bindingHome.root
     }
 
 }

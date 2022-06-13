@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+
+    >
+    <data>
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,8 +26,8 @@
             android:layout_height="0dp"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="#333030"
+            android:background="#BDBBC1"
             tools:listitem="@layout/item_gif" />
     </LinearLayout>
 
-</FrameLayout>
+</layout>

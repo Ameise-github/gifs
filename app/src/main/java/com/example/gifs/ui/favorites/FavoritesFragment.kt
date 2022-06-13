@@ -7,26 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.gifs.R
+import com.example.gifs.databinding.FragmentFavoritesBinding
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     companion object {
         fun newInstance() = FavoritesFragment()
     }
 
-    private lateinit var viewModel: FavoritesViewModel
+    private val viewModel by lazy {ViewModelProvider(this)[FavoritesViewModel::class.java] }
+    private lateinit var bindingFavorites: FragmentFavoritesBinding
+
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        bindingFavorites = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return bindingFavorites.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }
