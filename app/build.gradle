@@ -11,6 +11,8 @@ android {
         //region  buildConfigField
         buildConfigField "String", "API_GIPHY_BASE_URL", '"https://api.giphy.com/v1/gifs/"'
         buildConfigField "String", "API_KEY", '"rCYhd8MtIY53g3jbREuBtEopu7urtgp6"'
+        buildConfigField "String", "API_GIPHY_IMG_URL", '"https://media.giphy.com/media/"'
+        buildConfigField "String", "API_GIPHY_IMG_POSTFIX", '"/giphy.gif"'
         //endregion
 
         applicationId "com.example.gifs"

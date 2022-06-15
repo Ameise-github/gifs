@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.example.gifs.R
 import com.example.gifs.data.network.ClientGiphy
-import com.example.gifs.data.network.GifResponse
 import com.example.gifs.databinding.FragmentHomeBinding
 import com.example.gifs.ui.home.items.GifItem
+import com.example.gifs.ui.home.items.RvItemGif
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -36,39 +36,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // получить gif
         val groupAdapter = GroupAdapter<GroupieViewHolder>()
 
-        var items = listOf<GifItem>(
-            GifItem(
-                GifResponse(
-                    "1",
-                    "https://media.giphy.com/media/hpAtD9u0KVR9NSiLBt/giphy.gif",
-                    "gif-1"
-                )
-            ),
-            GifItem(
-                GifResponse(
-                    "2",
-                    "https://media.giphy.com/media/QXgrWK8kP866nCxdLe/giphy.gif",
-                    "gif-2"
-                )
-            ),
-            GifItem(
-                GifResponse(
-                    "3",
-                    "https://media.giphy.com/media/UDU4oUJIHDJgQ/giphy.gif",
-                    "gif-3"
-                )
-            )
-        )
-
-        groupAdapter.addAll(items)
         bindingHome.rvTrending.adapter = groupAdapter
-        /*client.api.getTrending()
+
+
+        client.api.getTrending()
             .subscribeOn(Schedulers.io())
+            .map { resp ->
+                resp.data.map { GifItem(RvItemGif(it.id)) }
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                groupAdapter.add(GifItem(it))
+                groupAdapter.addAll(it)
             }, Throwable::printStackTrace)
-*/
+
         return bindingHome.root
     }
 
