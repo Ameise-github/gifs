@@ -40,5 +40,7 @@
         <action
             android:id="@+id/action_details_to_home2"
             app:destination="@id/homeFragment" />
+        <argument android:name="gifDetails"
+            app:argType="com.example.gifs.ui.home.items.RvItemGif" />
     </fragment>
 </navigation>

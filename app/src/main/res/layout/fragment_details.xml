@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
 
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--    android:layout_width="match_parent"-->
     <!--    android:layout_height="match_parent"-->
     <!--    android:fitsSystemWindows="true"-->
     <!--    tools:context=".ui.details.DetailsFragment"-->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <data>
+        <variable
+            name="gif"
+            type="com.example.gifs.ui.details.DetailsViewModel" />
+
+    </data>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,12 +26,13 @@
 
             <ImageView
                 android:id="@+id/imgFull"
-                android:layout_width="239dp"
-                android:layout_height="221dp"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
                 android:layout_gravity="center"
                 android:maxWidth="240dp"
                 android:maxHeight="220dp"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"
+                app:imageUrl="@{gif.image}"/>
 
             <TextView
                 android:id="@+id/gitTitle"
@@ -34,26 +43,38 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:text="title"
+                android:text="@{gif.title}"
                 android:textColor="#1E1B1B"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/textView2"
+<!--            <TextView-->
+<!--                android:id="@+id/textViewUrl"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:text="@{gif.urlText}" />-->
+
+            <Button
+                android:id="@+id/b_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="url:" />
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/favorites" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_gravity="clip_horizontal"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                >
 
                 <ImageButton
                     android:id="@+id/b_save"

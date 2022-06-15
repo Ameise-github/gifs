@@ -7,17 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.gifs.R
 import com.example.gifs.data.network.ClientGiphy
 import com.example.gifs.databinding.FragmentHomeBinding
-import com.example.gifs.ui.home.items.GifItem
-import com.example.gifs.ui.home.items.RvItemGif
+import com.example.gifs.ui.items.ClickListener
+import com.example.gifs.ui.items.GifItem
+import com.example.gifs.ui.items.RvItemGif
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), ClickListener {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -42,7 +44,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         client.api.getTrending()
             .subscribeOn(Schedulers.io())
             .map { resp ->
-                resp.data.map { GifItem(RvItemGif(it.id)) }
+                resp.data.map { GifItem(RvItemGif(it.id, title = it.title), this) }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -52,4 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return bindingHome.root
     }
 
+    override fun onItemClick(gif: RvItemGif) {
+        findNavController().navigate(HomeFragmentDirections.actionHomeToDetails(gif))
+    }
 }
