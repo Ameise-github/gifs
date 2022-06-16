@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.gifs.db.favorites.FavoritesDao
-import com.example.gifs.ui.details.DetailsViewModel
 import com.example.gifs.ui.items.RvItemGif
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,11 +15,11 @@ class FavoritesViewModel(val favoritesDao: FavoritesDao) : ViewModel() {
     @Suppress("UNCHECKED_CAST")
     class Factory(private val favoritesDao: FavoritesDao) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return DetailsViewModel(favoritesDao) as T
+            return FavoritesViewModel(favoritesDao) as T
         }
     }
 
-    val state = MutableLiveData<FavoritesViewState>()
+    val state = MutableLiveData<FavoritesViewState>(FavoritesViewState())
     private val compositeDisposable = CompositeDisposable()
 
     fun init() {

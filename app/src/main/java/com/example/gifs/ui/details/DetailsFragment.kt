@@ -1,6 +1,7 @@
 package com.example.gifs.ui.details
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,19 +38,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         extGifId = args.gifDetails.id
 
-        viewModel.state.observe(requireActivity(), ::applyState)
+       // viewModel.state.observe(requireActivity(), ::applyState)
         viewModel.getFavorites(extGifId)
-
+        Log.d("DetailsFragment.onCreate", "${viewModel.isFav.get()}")
         bindingDetails.gitTitle.text = args.gifDetails.title
         bindingDetails.imageUrl = args.gifDetails.url
-
-        return bindingDetails.root
-    }
-
-
-    private fun applyState(state: DetailsViewState) {
-        bindingDetails.isFavorites = state.isFavorites
-        if (state.isFavorites) {
+        bindingDetails.isFavorites = viewModel.isFav.get()
+        if (viewModel.isFav.get()) {
             // delete
             bindingDetails.bFavorites.setOnClickListener { viewModel.deleteFavorites(extGifId) }
         } else {
@@ -62,5 +57,26 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 )
             }
         }
+        return bindingDetails.root
     }
+
+//TODO проверить работу  isFav. не всегда подхватывается
+
+//    private fun applyState(state: DetailsViewState) {
+//        bindingDetails.isFavorites = state.isFavorites
+//        Log.d("DetailsFragment.applyState", "${ state.isFavorites}")
+//        if (state.isFavorites) {
+//            // delete
+//            bindingDetails.bFavorites.setOnClickListener { viewModel.deleteFavorites(extGifId) }
+//        } else {
+//            //add
+//            bindingDetails.bFavorites.setOnClickListener {
+//                viewModel.addFavorites(
+//                    extGifId,
+//                    args.gifDetails.title,
+//                    args.gifDetails.url
+//                )
+//            }
+//        }
+//    }
 }

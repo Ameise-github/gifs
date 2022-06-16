@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.gifs.R
 import com.example.gifs.databinding.FragmentFavoritesBinding
 import com.example.gifs.db.GifDatabase
-import com.example.gifs.ui.home.HomeFragmentDirections
 import com.example.gifs.ui.items.ClickListener
 import com.example.gifs.ui.items.GifItem
 import com.example.gifs.ui.items.RvItemGif
@@ -41,21 +40,23 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites), ClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bindingFavorites = FragmentFavoritesBinding.inflate(inflater, container, false)
-
         viewModel.state.observe(requireActivity(), ::applyState)
-
-        bindingFavorites.rvFavorites.adapter = groupAdapter
-        viewModel.init()
+        bindingFavorites = FragmentFavoritesBinding.inflate(inflater, container, false)
 
         return bindingFavorites.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindingFavorites.rvFavorites.adapter = groupAdapter
+        viewModel.init()
+    }
+
     private fun applyState(state: FavoritesViewState) {
-        groupAdapter.addAll(state.items.map { GifItem(it, this) })
+        groupAdapter.update(state.items.map { GifItem(it, this) }.toList())
     }
 
     override fun onItemClick(gif: RvItemGif) {
-        findNavController().navigate(HomeFragmentDirections.actionHomeToDetails(gif))
+        findNavController().navigate(FavoritesFragmentDirections.actionFavoritesToDetails(gif))
     }
 }

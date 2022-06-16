@@ -5,22 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/img_item_gif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="4dp"
             android:minWidth="200dp"
             android:minHeight="200dp"
-            tools:srcCompat="@tools:sample/avatars"
-            />
-    </androidx.cardview.widget.CardView>
+            tools:srcCompat="@tools:sample/avatars" />
+    </LinearLayout>
 
 </layout>

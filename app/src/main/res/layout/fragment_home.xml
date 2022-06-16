@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
                 android:layout_weight="1"
-                android:background="#BDBBC1"
+                android:background="#E5E0EF"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 tools:listitem="@layout/item_gif" />
         </LinearLayout>
