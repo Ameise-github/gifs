@@ -10,9 +10,8 @@
     <!--    tools:context=".ui.details.DetailsFragment"-->
 
     <data>
-        <variable
-            name="gif"
-            type="com.example.gifs.ui.details.DetailsViewModel" />
+        <variable name="isFavorites" type="Boolean" />
+        <variable name="imageUrl" type="String" />
 
     </data>
     <FrameLayout
@@ -32,7 +31,7 @@
                 android:maxWidth="240dp"
                 android:maxHeight="220dp"
                 tools:src="@tools:sample/avatars"
-                app:imageUrl="@{gif.image}"/>
+                app:imageUrl="@{imageUrl}"/>
 
             <TextView
                 android:id="@+id/gitTitle"
@@ -43,7 +42,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:gravity="center"
-                android:text="@{gif.title}"
+                android:text="title"
                 android:textColor="#1E1B1B"
                 android:textSize="20sp" />
 
@@ -62,7 +61,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
-                android:text="@string/favorites" />
+                android:text='"@{isFavorites ? "удалить из избранного" : "добавить в избранное"}"'
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
