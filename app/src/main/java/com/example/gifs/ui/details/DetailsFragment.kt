@@ -19,7 +19,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private val args by navArgs<DetailsFragmentArgs>()
-    private lateinit var extGifId: String
 
     private val viewModel: DetailsViewModel by viewModels {
         DetailsViewModel.Factory(
@@ -36,47 +35,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     ): View? {
         bindingDetails = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        extGifId = args.gifDetails.id
+        bindingDetails.lifecycleOwner = this    // для обновления данных в MutableLiveData
+        bindingDetails.model = viewModel
 
-       // viewModel.state.observe(requireActivity(), ::applyState)
-        viewModel.getFavorites(extGifId)
-        Log.d("DetailsFragment.onCreate", "${viewModel.isFav.get()}")
-        bindingDetails.gitTitle.text = args.gifDetails.title
-        bindingDetails.imageUrl = args.gifDetails.url
-        bindingDetails.isFavorites = viewModel.isFav.get()
-        if (viewModel.isFav.get()) {
-            // delete
-            bindingDetails.bFavorites.setOnClickListener { viewModel.deleteFavorites(extGifId) }
-        } else {
-            //add
-            bindingDetails.bFavorites.setOnClickListener {
-                viewModel.addFavorites(
-                    extGifId,
-                    args.gifDetails.title,
-                    args.gifDetails.url
-                )
-            }
-        }
+        viewModel.init(args.gifDetails.title, args.gifDetails.url, args.gifDetails.id)
+        viewModel.getFavorites()
+        bindingDetails.bFavorites.setOnClickListener { viewModel.clickBFavorites() }
+
         return bindingDetails.root
     }
 
-//TODO проверить работу  isFav. не всегда подхватывается
-
-//    private fun applyState(state: DetailsViewState) {
-//        bindingDetails.isFavorites = state.isFavorites
-//        Log.d("DetailsFragment.applyState", "${ state.isFavorites}")
-//        if (state.isFavorites) {
-//            // delete
-//            bindingDetails.bFavorites.setOnClickListener { viewModel.deleteFavorites(extGifId) }
-//        } else {
-//            //add
-//            bindingDetails.bFavorites.setOnClickListener {
-//                viewModel.addFavorites(
-//                    extGifId,
-//                    args.gifDetails.title,
-//                    args.gifDetails.url
-//                )
-//            }
-//        }
-//    }
 }

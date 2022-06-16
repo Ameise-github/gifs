@@ -1,9 +1,5 @@
 package com.example.gifs.ui.details
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,54 +18,69 @@ class DetailsViewModel(val favoritesDao: FavoritesDao) : ViewModel() {
         }
     }
 
-//    val state = MutableLiveData<DetailsViewState>()
     private val compositeDisposable = CompositeDisposable()
-    val isFav: ObservableBoolean = ObservableBoolean(false)
+    var isFavorit = MutableLiveData(false)
 
+    var titleGif: String = ""
+    var imgUrl: String = ""
+    private var extGifId: String = ""
 
-    fun getFavorites(extGifId: String) {
-        compositeDisposable.add(favoritesDao.getGif(extGifId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                isFav.set(true)
-//                updateState { it.copy(isFavorites = true) }
-            })
-        Log.d("DetailsViewModel.getFavorites", "${ isFav.get()}")
+    fun init(title: String, url: String, extId: String) {
+        titleGif = title
+        imgUrl = url
+        extGifId = extId
+    }
+
+    fun getFavorites() {
+        if (!extGifId.isEmpty()) {
+            compositeDisposable.add(
+                favoritesDao.getGif(extGifId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { isFavorit.value = true },
+                        Throwable::printStackTrace
+                    )
+            )
+        }
+    }
+
+    fun clickBFavorites() {
+        if (isFavorit.value == true) {
+            // delete
+            deleteFavorites()
+        } else {
+            // add
+            addFavorites()
+        }
     }
 
 
-    fun addFavorites(extGifId: String, titleGif: String, urlGif: String) {
-        compositeDisposable.add(favoritesDao.insertGif(FavoritesEntity(extId = extGifId, title = titleGif, url = urlGif))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                isFav.set(true)
-//                updateState { it.copy(isFavorites = true) }
-            })
-//        Log.d("DetailsViewModel.addFavorites1", "${ isFav.get()}")
-//        isFav.set(true)
-        Log.d("DetailsViewModel.addFavorites2", "${ isFav.get()}")
+    private fun addFavorites() {
+        compositeDisposable.add(
+            favoritesDao.insertGif(
+                FavoritesEntity(
+                    extId = extGifId,
+                    title = titleGif,
+                    url = imgUrl
+                ))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { isFavorit.value = true },
+                    Throwable::printStackTrace
+                )
+        )
     }
 
-    fun deleteFavorites(extGifId: String) {
+    private fun deleteFavorites() {
         compositeDisposable.delete(favoritesDao.delete(extGifId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                isFav.set(false)
-//                updateState { it.copy(isFavorites = false) }
+                isFavorit.value = false
             })
-        Log.d("DetailsViewModel.deleteFavorites", "${ isFav}")
     }
-
-//    private fun updateState(update: (DetailsViewState) -> DetailsViewState) {
-//        Handler(Looper.getMainLooper()).post {
-//            state.value?.also {
-//                state.value = update(it)
-//            }
-//        }
-//    }
 
     override fun onCleared() {
         compositeDisposable.dispose()
